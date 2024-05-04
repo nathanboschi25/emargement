@@ -1,0 +1,118 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: "Montserrat", "Noto Sans", sans-serif;
+            margin: 0;
+        }
+
+        .logo {
+            width: 120px;
+            text-align: left;
+        }
+
+        .page-title h1 {
+            margin: 0;
+        }
+
+        .semaine {
+            font-size: 15px;
+            margin: 0 0 10px 5px;
+        }
+
+        .emargement {
+            width: 840px;
+        }
+
+        table thead,
+        table tfoot {
+            background-color: #a3ccf6;
+        }
+
+        table thead tr, table tfoot tr {
+            height: 60px;
+        }
+
+        table tr.signature {
+            background-color: #e3e3e3;
+            height: 80px;
+        }
+
+        table tr {
+            height: 80px;
+        }
+
+        table td,
+        table th {
+            width: 150px;
+            border: 2px solid black;
+            padding: 5px;
+        }
+
+        table.header {
+            border: none;
+        }
+
+        .event_title {
+            width: 145px;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+            white-space: nowrap;
+            overflow: scroll;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <title>Fiche d'émargement</title>
+</head>
+<body>
+<div class="emargement">
+    <% for (let i = 0; i < events.length; i += 4) { %>
+        <img src="data:image/jpeg;base64,<%= dep_logo %>" class="logo">
+
+        <p class="semaine">Fiche d'émargement du <b><%= date %></b> - Groupe : <b><%= group.name %></b></p>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Etudiants</th>
+                <% /* Output up to 4 events for this table */ %>
+                <% for (let j = i; j < Math.min(i + 4, events.length); j++) { %>
+                    <th><p class="event_title"><%= events[j].name %></p><%= events[j].startTime %>
+                        - <%= events[j].endTime %></th>
+                <% } %>
+            </tr>
+            </thead>
+            <tbody>
+            <% group.students.forEach(student => { %>
+                <tr>
+                    <td><%= student.name %></td>
+                    <% /* Fill cells with attendance data for the current events */ %>
+                    <% for (let j = i; j < Math.min(i + 4, events.length); j++) { %>
+                        <td></td>
+                    <% } %>
+                </tr>
+            <% }); %>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <% /* Output teacher names for the current events */ %>
+                <% for (let j = i; j < Math.min(i + 4, events.length); j++) { %>
+                    <td><b><%= events[j].teacher %></b></td>
+                <% } %>
+            </tr>
+            <tr class="signature">
+                <td>Signature :</td>
+                <% /* Empty cells for student signatures */ %>
+                <% for (let j = i; j < Math.min(i + 4, events.length); j++) { %>
+                    <td></td>
+                <% } %>
+            </tr>
+            </tfoot>
+        </table>
+        <div style="page-break-after: always;"></div>
+    <% } %>
+</div>
+</body>
